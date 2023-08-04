@@ -1,0 +1,6 @@
+
+*.vsidx
+*.txt
+*.ipch
+*.cs
+*.obj
