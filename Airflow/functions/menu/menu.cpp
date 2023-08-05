@@ -136,11 +136,19 @@ void anti_hit_tab()
 					slider( "speed", &cond.distortion_speed, 0, 100, 7, "" );
 				}
 
-				slider( "yaw add", &cond.yaw_add, -180, 180, !cond.random_speed ? 8 : 7, "" );
-				slider( "jitter range", &cond.jitter_range, -180, 180, !cond.random_speed ? 10 : 9, "" );
+				int new_index = 6;
+				if ( !cond.random_speed ) {
+					new_index = 6 + 1;
+				} else {
+					new_index = 6;
+				}
 
-				combo_box( "condition", &g_cfg.antihit.condition_type, !cond.random_speed ? 11 : 9, { "standing", "moving", "air" } );
-				combo_box( "yaw jitter", &cond.jitter_mode, !cond.random_speed ? 9 : 8, { "disabled", "center", "offset", "random" } );
+
+				slider( "yaw add", &cond.yaw_add, -180, 180, new_index + 1, "" );
+				slider( "jitter range", &cond.jitter_range, -180, 180, new_index + 2, "" );
+
+				combo_box( "condition", &g_cfg.antihit.condition_type, new_index + 3, { "standing", "moving", "air" } );
+				combo_box( "yaw jitter", &cond.jitter_mode, new_index + 4, { "disabled", "center", "offset", "random" } );
 
 
 			} else {

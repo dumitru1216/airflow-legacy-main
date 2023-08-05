@@ -4,3 +4,13 @@
 *.ipch
 *.cs
 *.obj
+*.tlog
+*.ipdb
+*.recipe
+*.iobj
+*.db-shm
+.vs/Airflow (legacy)/v17/Browse.VC.db-wal
+*.db
+*.opendb
+*.log
+*.map
