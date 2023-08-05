@@ -192,9 +192,9 @@ namespace tr::client {
 					renderable->get_color_modulation(model->diffuse_modulation.base( ) );
 
 					if (!original) {
-						model->diffuse_modulation.x *= g_cfg.misc.world_clr[props][0];
-						model->diffuse_modulation.y *= g_cfg.misc.world_clr[props][1];
-						model->diffuse_modulation.w *= g_cfg.misc.world_clr[props][2];
+						model->diffuse_modulation.x *= g_cfg.misc.world_clr[props][0] / 255.f;
+						model->diffuse_modulation.y *= g_cfg.misc.world_clr[props][1] / 255.f;
+						model->diffuse_modulation.w *= g_cfg.misc.world_clr[props][2] / 255.f;
 					}
 
 					float alpha = (model->entry.instance_data.alpha / 255.f);

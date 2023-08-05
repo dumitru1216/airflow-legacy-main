@@ -43,10 +43,12 @@ inline void save_clr(json& j, std::string name, color* v) {
 	j[name][xor_c("a")] = color[3];
 }
 
-inline void save_bind(json& j, std::string name, const key_binds_t& v) {
-	j[name][xor_c("key")] = v.key;
-	j[name][xor_c("type")] = v.type;
+inline void save_bind( json& j, std::string name, const key_bind_info_t& v ) {
+	j[ name ][ "key" ] = v.key;
+	j[ name ][ "type" ] = v.type;
+	j[ name ][ "toggled" ] = v.toggled;
 }
+
 
 inline void load_uint(const json& j, std::string name, unsigned int& v) {
 	if (j[name].empty())
@@ -65,12 +67,13 @@ inline void load_clr(const json& j, std::string name, color& v) {
 	v[3] = j[name][xor_c("a")].asFloat();
 }
 
-inline void load_bind(json& j, std::string name, key_binds_t& v) {
-	if (j[name].empty())
+inline void load_bind( json& j, std::string name, key_bind_info_t& v ) {
+	if ( j[ name ].empty( ) )
 		return;
 
-	v.key = j[name][xor_c("key")].asInt();
-	v.type = j[name][xor_c("type")].asInt();
+	v.key = j[ name ][ "key" ].asInt( );
+	v.type = j[ name ][ "type" ].asInt( );
+	v.toggled = j[ name ][ "toggled" ].asBool( );
 }
 
 inline void load_int(const json& j, std::string name, int& v) {

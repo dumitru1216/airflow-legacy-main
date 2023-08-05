@@ -1,5 +1,6 @@
 #pragma once
 #include "../base/other/color.h"
+#include "menu/menu.h"
 
 #include <array>
 
@@ -152,19 +153,7 @@ struct chams_t {
 	color glow_color = color(255, 255, 255, 255);
 };
 
-struct key_binds_t;
-struct key_binds_t {
-	int key;
-	int type;
-	bool toggled;
-	bool expand;
-	bool changing_key;
-	bool changing_type;
-
-	key_binds_t( ) : key( -1 ), type( -1 ),
-		toggled( false ), expand( false ), changing_key( false ),
-		changing_type( false ) { }
-};
+struct key_bind_info_t;
 
 struct anti_aim_angles_t
 {
@@ -409,7 +398,7 @@ struct configs_t {
 		std::array<skin_weapon_t, weapon_cfg_max> skin_weapon{};
 	}skins;
 
-	std::array<key_binds_t, binds_max> binds;
+	std::array<key_bind_info_t, binds_max> binds;
 };
 
 extern configs_t g_cfg;

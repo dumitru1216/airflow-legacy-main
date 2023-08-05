@@ -28,11 +28,11 @@ void c_glow_esp::on_post_screen_effects() {
 		};
 
 		auto draw_glow = [&](color& clr, bool ignore = false) {
-			object->color = vector3d(clr[0],
-				clr[1],
-				clr[2]);
+			object->color = vector3d(clr[0] / 255.f,
+				clr[1] / 255.f,
+				clr[2] / 255.f );
 
-			object->alpha = clr[3];
+			object->alpha = clr[3] / 255.f;
 
 			if (ignore)
 				object->occlued_render = true;

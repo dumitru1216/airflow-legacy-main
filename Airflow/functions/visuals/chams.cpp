@@ -148,9 +148,9 @@ bool c_chams::draw_model(chams_t& chams, matrix3x4_t* matrix, float alpha, bool 
 		mat->set_material_var_flag(material_var_nofog, true);
 		mat->set_material_var_flag(material_var_ignorez, xqz);
 
-		float colors[3]{ clr[0], clr[1], clr[2] };
+		float colors[3]{ clr[0] / 255.f, clr[1] / 255.f, clr[2] / 255.f };
 		
-		interfaces::render_view->set_blend(clr[3] * alpha);
+		interfaces::render_view->set_blend( ( clr[ 3 ] / 255.f ) * alpha );
 		interfaces::render_view->set_color_modulation(colors);
 
 		interfaces::model_render->forced_material_override(mat);
@@ -173,7 +173,7 @@ bool c_chams::draw_model(chams_t& chams, matrix3x4_t* matrix, float alpha, bool 
 
 			auto var = glow->find_var(xor_c("$envmaptint"), nullptr);
 			if (var)
-				var->set_vec_value(glow_color[0], glow_color[1], glow_color[2]);
+				var->set_vec_value(glow_color[0] / 255.f, glow_color[1] / 255.f, glow_color[2] / 255.f );
 
 			auto var2 = glow->find_var(xor_c("$envmapfresnelminmaxexp"), nullptr);
 			if (var2)
@@ -188,7 +188,7 @@ bool c_chams::draw_model(chams_t& chams, matrix3x4_t* matrix, float alpha, bool 
 
 		auto var = material->find_var(xor_c("$envmaptint"), nullptr);
 		if (var)
-			var->set_vec_value(main_color[0], main_color[1], main_color[2]);
+			var->set_vec_value(main_color[0] / 255.f, main_color[1] / 255.f, main_color[2] / 255.f );
 
 		draw_model(main_color, material, matrix);
 		return true;
@@ -344,9 +344,9 @@ void c_chams::on_post_screen_effects() {
 			mat->set_material_var_flag(material_var_nofog, true);
 			mat->set_material_var_flag(material_var_ignorez, true);
 
-			float colors[3]{ clr[0], clr[1], clr[2] };
+			float colors[3]{ clr[0] / 255.f, clr[1] / 255.f, clr[2] / 255.f };
 
-			interfaces::render_view->set_blend(clr[3] * data.alpha);
+			interfaces::render_view->set_blend( ( clr[ 3 ] / 255.f ) * data.alpha );
 			interfaces::render_view->set_color_modulation(colors);
 
 			interfaces::model_render->forced_material_override(mat);
@@ -370,7 +370,7 @@ void c_chams::on_post_screen_effects() {
 
 				auto var = glow->find_var(xor_c("$envmaptint"), nullptr);
 				if (var)
-					var->set_vec_value(glow_color[0], glow_color[1], glow_color[2]);
+					var->set_vec_value(glow_color[0] / 255.f, glow_color[1] / 255.f, glow_color[2] / 255.f );
 
 				auto var2 = glow->find_var(xor_c("$envmapfresnelminmaxexp"), nullptr);
 				if (var2)
@@ -384,7 +384,7 @@ void c_chams::on_post_screen_effects() {
 
 			auto var = material->find_var(xor_c("$envmaptint"), nullptr);
 			if (var)
-				var->set_vec_value(main_color[0], main_color[1], main_color[2]);
+				var->set_vec_value(main_color[0] / 255.f, main_color[1] / 255.f, main_color[2] / 255.f );
 
 			draw_model(main_color, material);
 		}

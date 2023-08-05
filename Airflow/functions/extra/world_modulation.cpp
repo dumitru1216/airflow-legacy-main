@@ -117,7 +117,7 @@ void c_world_modulation::light_props_modulation() {
 		return;
 
 	auto cur_clr = g_cfg.misc.world_clr[props];
-	auto custom_clr = color24_t(cur_clr.r(), cur_clr.g(), cur_clr.b());
+	auto custom_clr = color24_t(cur_clr.r() / 255, cur_clr.g() / 255, cur_clr.b() / 255 );
 	auto white_clr = color24_t(255, 255, 255);
 
 	for (const auto& l : light_array) {

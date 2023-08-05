@@ -31,9 +31,9 @@ void draw_beam(vector3d start, vector3d end, color clr) {
 	beam_info.segments = 2;
 	beam_info.renderable = true;
 	beam_info.brightness = clr.a();
-	beam_info.red = clr.r();
-	beam_info.green = clr.g();
-	beam_info.blue = clr.b();
+	beam_info.red = clr.r() / 255;
+	beam_info.green = clr.g() / 255;
+	beam_info.blue = clr.b() / 255;
 	beam_info.speed = 1.f;
 	beam_info.start_frame = 0;
 	beam_info.frame_rate = 0.f;

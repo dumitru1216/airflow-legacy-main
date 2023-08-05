@@ -94,19 +94,19 @@ namespace tr {
 			static auto prop_tex = xor_str("StaticProp");
 
 			if (std::strstr(name, world_tex.c_str())) {
-				*r *= g_cfg.misc.world_clr[walls][0];
-				*g *= g_cfg.misc.world_clr[walls][1];
-				*b *= g_cfg.misc.world_clr[walls][2];
+				*r *= g_cfg.misc.world_clr[walls][0] / 255.f;
+				*g *= g_cfg.misc.world_clr[walls][1] / 255.f;
+				*b *= g_cfg.misc.world_clr[walls][2] / 255.f;
 			}
 			else if (std::strstr(name, sky_tex.c_str())) {
-				*r *= g_cfg.misc.world_clr[sky][0];
-				*g *= g_cfg.misc.world_clr[sky][1];
-				*b *= g_cfg.misc.world_clr[sky][2];
+				*r *= g_cfg.misc.world_clr[sky][0]/ 255.f;
+				*g *= g_cfg.misc.world_clr[sky][1]/ 255.f;
+				*b *= g_cfg.misc.world_clr[sky][2]/ 255.f;
 			}
 			else if (std::strstr(name, prop_tex.c_str())) {
-				*r *= g_cfg.misc.world_clr[props][0];
-				*g *= g_cfg.misc.world_clr[props][1];
-				*b *= g_cfg.misc.world_clr[props][2];
+				*r *= g_cfg.misc.world_clr[props][0] / 255.f;
+				*g *= g_cfg.misc.world_clr[props][1] / 255.f;
+				*b *= g_cfg.misc.world_clr[props][2] / 255.f;
 			}
 		}
 	}

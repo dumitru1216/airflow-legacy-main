@@ -29,6 +29,7 @@ void c_visuals_wrapper::on_directx() {
 		g_event_visuals->on_directx();
 		g_local_visuals->on_directx();
 		g_grenade_warning->on_directx();
+		
 		g_event_logger->on_directx();
 	}
 }
