@@ -86,12 +86,12 @@ void ragebot_tab()
 			slider( xor_c( "min damage" ), &weapon_settings.mindamage, 1, 120, 9, "" );
 			slider( xor_c( "min damage (override)" ), &weapon_settings.damage_override, 1, 120, 10, "" );
 
-			bool draw_removals = multi_combo_box( xor_c( "hitboxes" ), &weapon_settings.hitboxes, 5,
+			bool draw_removals = multi_combo_box("hitboxes", &weapon_settings.hitboxes, 5,
 												  { "head", "chest", "stomach" , "pelvis", "arms", "legs" } );
 
 			checkbox( xor_c( "quick stop" ), &weapon_settings.quick_stop, 11 );
 
-			multi_combo_box( xor_c( "options quick stop" ), &weapon_settings.quick_stop_options, 12,
+			multi_combo_box("options quick stop", &weapon_settings.quick_stop_options, 12,
 							   {"early" , "between shots","force accuracy" } );
 
 			combo_box( "target selection", &weapon_settings.target_selection, 3, { "lowest distance", "highest damage" } );
