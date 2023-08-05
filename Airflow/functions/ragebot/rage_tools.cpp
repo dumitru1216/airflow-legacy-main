@@ -131,7 +131,7 @@ namespace cheat_tools {
 
 	constexpr int total_seeds = 255;
 
-	vector2d calc_spread_angle(int bullets, float recoil_index, int i) {
+	vector2d calc_spread_angle(int bullets, float recoil_index, int i) { // pasted shit
 		auto index = g_ctx.weapon->item_definition_index();
 
 		math::random_seed(i + 1u);
@@ -200,12 +200,6 @@ namespace cheat_tools {
 	}
 
 	bool is_accuracy_valid(c_csplayer* player, point_t& point, float amount, float* out_chance) {
-#ifdef _DEBUG
-		spread_point.reset();
-		current_spread = 0.f;
-		spread_points.clear();
-#endif
-
 		if (cvars::weapon_accuracy_nospread->get_int() > 0 || amount <= 0.f)
 			return true;
 
@@ -237,12 +231,6 @@ namespace cheat_tools {
 		vector3d pos = math::angle_from_vectors(start, point.position);
 		math::angle_to_vectors(pos, forward, right, up);
 
-#ifdef _DEBUG
-		if (debug_hitchance) {
-			current_spread = g_ctx.spread;
-			g_render->world_to_screen(point.position, spread_point);
-		}
-#endif
 		auto sniper = g_ctx.weapon->is_sniper();
 
 		bool is_single_sniper = g_ctx.weapon->item_definition_index() == weapon_ssg08
@@ -281,13 +269,6 @@ namespace cheat_tools {
 			direction = direction.normalized();
 
 			auto end = start + direction * range;
-#ifdef _DEBUG
-			if (debug_hitchance) {
-				vector2d scr_end;
-				if (g_render->world_to_screen(end, scr_end))
-					spread_points.emplace_back(scr_end);
-			}
-#endif
 
 			if (can_hit_hitbox(start, end, player, point.hitbox, point.record))
 				++hits;

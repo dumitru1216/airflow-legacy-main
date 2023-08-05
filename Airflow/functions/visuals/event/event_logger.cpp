@@ -22,6 +22,9 @@ std::pair<std::string, color> c_event_logger::get_message_prefix_type(int type) 
 	case event_buy:
 		return std::make_pair(xor_str("BUY"), clr.decrease(15));
 		break;
+	case event_debug:
+	    return std::make_pair( xor_str( "DEBUG" ), color( 240, 159, 149 ) );
+		break;
 	}
 
 	return { };
@@ -33,13 +36,20 @@ void c_event_logger::add_message(const std::string& text, int message_type, bool
 
 	auto clr = g_cfg.misc.ui_color;
 
-	if (!debug) {
+	if (!debug && !g_cfg.visuals.eventlog.render_debug_log) {
 		auto& new_message = messages.emplace_back();
 
 		new_message.msgtype		= message_type;
 		new_message.time		= g_ctx.system_time();
 		new_message.alpha		= 0.f;
 		new_message.text		= text;
+	} else if ( debug && g_cfg.visuals.eventlog.render_debug_log ) {
+		auto& new_message = messages.emplace_back( );
+
+		new_message.msgtype = message_type;
+		new_message.time = g_ctx.system_time( );
+		new_message.alpha = 0.f;
+		new_message.text = text;
 	}
 
 	interfaces::convar->print_console_color(clr, xor_c("AIRFLOW ~ "));

@@ -241,6 +241,7 @@ struct configs_t {
 
 		struct event_logs_t {
 			bool			enable{};
+			bool            render_debug_log{};
 			bool			filter_console{};
 			unsigned int	logs{};
 		}eventlog;

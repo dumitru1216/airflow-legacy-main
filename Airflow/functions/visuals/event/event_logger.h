@@ -6,7 +6,8 @@ enum message_prefix_t {
 	event_hit,
 	event_miss,
 	event_plant,
-	event_buy
+	event_buy,
+	event_debug
 };
 
 class color;

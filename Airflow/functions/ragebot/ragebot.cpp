@@ -3,38 +3,6 @@
 
 #include "../../additionals/threading/threading.h"
 
-#ifdef _DEBUG
-#define DEBUG_LC 0
-#define DEBUG_SP 0
-void draw_hitbox(c_csplayer* player, matrix3x4_t* bones, int idx, int idx2, bool dur = false) {
-	studio_hdr_t* studio_model = interfaces::model_info->get_studio_model(player->get_model());
-	if (!studio_model)
-		return;
-
-	mstudio_hitbox_set_t* hitbox_set = studio_model->get_hitbox_set(0);
-	if (!hitbox_set)
-		return;
-
-	for (int i = 0; i < hitbox_set->hitboxes; i++) {
-		mstudio_bbox_t* hitbox = hitbox_set->get_hitbox(i);
-		if (!hitbox)
-			continue;
-
-		vector3d vMin, vMax;
-		math::vector_transform(hitbox->bbmin, bones[hitbox->bone], vMin);
-		math::vector_transform(hitbox->bbmax, bones[hitbox->bone], vMax);
-
-		if (hitbox->radius != -1.f)
-			interfaces::debug_overlay->add_capsule_overlay(vMin, vMax,
-				hitbox->radius,
-				255,
-				255 * idx,
-				255 * idx2,
-				150, dur ? interfaces::global_vars->interval_per_tick * 2 : 5.f, 0, 1);
-	}
-}
-#endif
-
 void c_rage_bot::store(c_csplayer* player) {
 	auto& backup = this->backup[player->index()];
 	backup.duck = player->duck_amount();
@@ -128,15 +96,32 @@ int c_rage_bot::get_min_damage(c_csplayer* player) {
 		weapon_cfg.damage_override
 		: weapon_cfg.mindamage;
 
-	// hp + 1 slider
-	if (menu_damage >= 100)
-		return health + (menu_damage - 100);
+	/* little more stuff like dutucodenz */
+	auto weapon = g_ctx.weapon;
+	int type = weapon->item_definition_index( );
+
+	/* we cant got for 100 damage or damage > 15 on def pistol */
+	if ( menu_damage >= 100 && !( type == weapontype_pistol ) ) {
+		int damage{ health }; // init it 
+
+		if ( type == weapontype_pistol ) {
+			if ( damage > 50 ) {
+				return 15;
+			} else {
+				return damage / 3;
+			}
+		} else if ( type == weapon_awp ) {
+			return damage;
+		} else {
+			return damage / 2;
+		}
+	}
 
 	return menu_damage;
 }
 
 bool c_rage_bot::should_stop() {
-	if (!(cheat_tools::get_weapon_config().quick_stop))
+	if (!cheat_tools::get_weapon_config().quick_stop) // no sense of ()
 		return false;
 
 	if (g_ctx.weapon->is_misc_weapon())
@@ -361,6 +346,7 @@ bool is_point_predictive(c_csplayer* player, point_t& point) {
 		return false;
 
 	float speed = std::max<float>(g_engine_prediction->unprediced_velocity.length(true), 1.f);
+	int flags = g_ctx.local->flags( );
 
 	int max_stop_ticks = std::max<int>(((speed / g_movement->get_max_speed()) * 5.f) - 1, 0);
 	if (max_stop_ticks == 0)
@@ -370,9 +356,11 @@ bool is_point_predictive(c_csplayer* player, point_t& point) {
 	for (int i = 0; i < max_stop_ticks; ++i) {
 		auto pred_velocity = g_engine_prediction->unprediced_velocity * math::ticks_to_time(i + 1);
 
-		vector3d origin = g_ctx.eye_position + pred_velocity;
-		int flags = g_ctx.local->flags();
+		/* opai please stop stop storing stuff in loop, it will infinitly run and fuck up your performance 
+			int flags = g_ctx.local->flags( );
+		*/
 
+		vector3d origin = g_ctx.eye_position + pred_velocity;
 		g_utils->extrapolate(g_ctx.local, origin, pred_velocity, flags, flags & fl_onground);
 
 		last_predicted_velocity = pred_velocity;
@@ -422,22 +410,10 @@ void thread_build_points(aim_cache_t* aim_cache) {
 			auto awall = g_auto_wall->fire_bullet(g_ctx.local, aim_cache->player, g_ctx.weapon_info,
 				g_ctx.weapon->is_taser(), g_ctx.eye_position, p.first);
 
-			//interfaces::debug_overlay->add_text_overlay(p.first, interfaces::global_vars->interval_per_tick * 2.f, "%d", awall.dmg);
-
 			auto new_point = point_t(hitbox, p.second, awall.dmg, best_record, p.first);
 
 			if (p.second)
 				new_point.predictive = is_point_predictive(aim_cache->player, new_point);
-
-#ifdef _DEBUG
-			if (g_rage_bot->debug_aimbot) {
-				interfaces::debug_overlay->add_box_overlay(new_point.position,
-					vector3d(-1, -1, -1), vector3d(1, 1, 1), {}, 255, new_point.center ? 255 : 0, new_point.center ? 255 : 0, 200,
-					interfaces::global_vars->interval_per_tick * 2.f);
-
-				interfaces::debug_overlay->add_text_overlay(new_point.position, interfaces::global_vars->interval_per_tick * 2.f, "%d", new_point.damage);
-			}
-#endif
 
 			aim_cache->points.emplace_back(new_point);
 		}
@@ -489,14 +465,6 @@ void thread_get_best_point(aim_cache_t* aim_cache) {
 }
 
 void c_rage_bot::proceed_aimbot() {
-#ifdef _DEBUG
-	if (cheat_tools::debug_hitchance) {
-		cheat_tools::spread_point.reset();
-		cheat_tools::current_spread = 0.f;
-		cheat_tools::spread_points.clear();
-	}
-#endif
-
 	target = nullptr;
 	working = false;
 	stopping = false;
@@ -698,17 +666,6 @@ void c_rage_bot::proceed_aimbot() {
 
 					if (g_cfg.visuals.chams[c_onshot].enable)
 						g_chams->add_shot_record(target, best_point.record->sim_orig.bone);
-#ifdef _DEBUG
-#if DEBUG_LC
-					draw_hitbox(target, best_point.record->sim_orig.bone, 0, 0, false);
-#endif
-
-#if DEBUG_SP 
-					draw_hitbox(target, best_point.record->sim_left.bone, 0, 0, false);
-					draw_hitbox(target, best_point.record->sim_right.bone, 1, 0, false);
-					draw_hitbox(target, best_point.record->sim_zero.bone, 0, 1, false);
-#endif
-#endif
 
 					this->add_shot_record(target, best_point);
 				}

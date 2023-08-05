@@ -51,7 +51,7 @@ void c_rage_bot::add_shot_record(c_csplayer* player, const point_t& best) {
 			+ (shot->resolver.valid ? (xor_str(", res: ")
 				+ shot->resolver.mode) : "");
 
-		g_event_logger->add_message(out, -1, true);
+		g_event_logger->add_message(out, event_debug, true);
 	}
 
 	shots.emplace_back(*shot);

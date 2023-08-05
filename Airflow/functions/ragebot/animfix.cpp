@@ -53,7 +53,7 @@ bool records_t::is_valid() {
 	float correct = std::clamp(g_ctx.lerp_time + g_ctx.ping, 0.f, 1.f);
 
 	float delta_time = std::fabs(correct - (time - sim_time));
-	if (delta_time > 0.2f)
+	if (delta_time > 0.2f) // thats correct
 		return false;
 
 	return true;
