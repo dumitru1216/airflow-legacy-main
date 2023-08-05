@@ -433,7 +433,7 @@ void misc_tab()
 	case 3:
 	{
 		checkbox( "event log", &g_cfg.visuals.eventlog.enable, 1 );
-		checkbox( "draw debug logs", &g_cfg.visuals.eventlog.render_debug_log, 1 );
+		checkbox( "draw debug logs", &g_cfg.visuals.eventlog.render_debug_log, 9 );
 		checkbox( "filter console", &g_cfg.visuals.eventlog.filter_console, 2 );
 		checkbox( "damage indicator", &g_cfg.misc.damage, 7 );
 
