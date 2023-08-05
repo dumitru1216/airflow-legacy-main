@@ -17,6 +17,12 @@ struct key_bind_info_t
 	{ }
 };
 
+enum animation_flags_t {
+	skip_enable = ( 1 << 0 ),
+	skip_disable = ( 1 << 1 ),
+	lerp_animation = ( 1 << 2 ),
+};
+
 struct menu_info_t
 {
 public:
@@ -37,6 +43,36 @@ public:
 	}
 };
 extern menu_info_t menu_info;
+
+#include <string>
+
+struct menu_bomb_t {
+	bool filled = false;
+	int time = 0;
+	int health = 0;
+	std::string bomb_site = "A";
+
+	__forceinline void reset( ) {
+		if ( !filled )
+			return;
+
+		time = 0;
+		health = 0;
+		bomb_site = "A";
+
+		filled = false;
+	}
+};
+
+#include <memory>
+class c_menu {
+public:
+	menu_bomb_t bomb{};
+	void store_bomb( );
+	void create_animation( float& mod, bool cond, float speed_multiplier = 1.f, unsigned int animation_flags = 0 );
+};
+inline const auto g_menu = std::make_unique< c_menu >( );
+
 
 // menu utils
 extern int cursor_pos[2];

@@ -389,7 +389,7 @@ void c_grenade_warning::on_directx() {
 		if (data.nade_detonate_time)
 			grenade_duration = std::clamp(std::abs(data.nade_expire_time - interfaces::global_vars->cur_time) / data.nade_detonate_time, 0.f, 1.f);
 
-		//g_menu->create_animation(mod, data.path.size() > 1 && (data.nade_detonate_time ? grenade_duration >= 0.01f : data.is_detonated), 0.3f, lerp_animation);
+		g_menu->create_animation(mod, data.path.size() > 1 && (data.nade_detonate_time ? grenade_duration >= 0.01f : data.is_detonated), 0.3f, lerp_animation);
 
 		if (mod <= 0.f)
 			continue;

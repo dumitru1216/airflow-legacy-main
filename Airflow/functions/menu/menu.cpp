@@ -14,6 +14,26 @@ menu_info_t menu_info = {};
 
 const int array_cnt = 5;
 
+void c_menu::create_animation( float& mod, bool cond, float speed_multiplier, unsigned int animation_flags ) {
+	float time = ( g_ctx.animation_speed * 5.f ) * speed_multiplier;
+
+	if ( ( animation_flags & skip_enable ) && cond )
+		mod = 1.f;
+	else if ( ( animation_flags & skip_disable ) && !cond )
+		mod = 0.f;
+
+	if ( animation_flags & lerp_animation )
+		mod = std::lerp( mod, ( float )cond, time );
+	else {
+		if ( cond && mod <= 1.f )
+			mod += time;
+		else if ( !cond && mod >= 0.f )
+			mod -= time;
+	}
+
+	mod = std::clamp( mod, 0.f, 1.f );
+}
+
 std::array<std::string, array_cnt> tabs =
 {
 	"ragebot",

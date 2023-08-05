@@ -165,7 +165,7 @@ void c_weapon_esp::on_directx() {
 		if (weapon_info->proj) {
 			if (weapon_info->class_id == CInferno && g_cfg.visuals.esp[esp_weapon].elements & 16) {
 				float timer = weapon_info->expire_inferno / fire_duration;
-				//g_menu->create_animation(weapon_info->ease_inferno, timer > 0.f, 0.3f, lerp_animation);
+				g_menu->create_animation(weapon_info->ease_inferno, timer > 0.f, 0.3f, lerp_animation);
 
 				float range = std::max(100.f, weapon_info->inferno_range) * weapon_info->ease_inferno;
 
@@ -175,7 +175,7 @@ void c_weapon_esp::on_directx() {
 
 			if (weapon_info->did_smoke && g_cfg.visuals.esp[esp_weapon].elements & 32) {
 				float timer = weapon_info->expire_smoke / smoke_duration;
-				//g_menu->create_animation(weapon_info->ease_smoke, timer > 0.f, 0.3f, lerp_animation);
+				g_menu->create_animation(weapon_info->ease_smoke, timer > 0.f, 0.3f, lerp_animation);
 
 				float range = 160.5f * weapon_info->ease_smoke;
 

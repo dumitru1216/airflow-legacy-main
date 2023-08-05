@@ -362,8 +362,8 @@ void c_local_visuals::on_paint_traverse() {
 				g_ctx.can_penetrate = false;
 		}
 	}
-	//else
-	//	g_menu->bomb.reset();
+	else
+		g_menu->bomb.reset();
 
 	if (g_ctx.weapon) {
 		if ((g_cfg.misc.removals & scope) && g_ctx.scoped && g_ctx.is_sniper) {

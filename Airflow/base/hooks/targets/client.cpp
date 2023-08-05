@@ -68,8 +68,10 @@ namespace tr::client {
 		g_ctx.is_alive = g_ctx.local && g_ctx.local->is_alive();
 		g_ctx.open_console = g_cfg.misc.menu || g_utils->chat_opened() || interfaces::engine->console_opened();
 
-		if (g_ctx.in_game)
+		if ( g_ctx.in_game )
 			g_ctx.tick_rate = 1.f / interfaces::global_vars->interval_per_tick;
+		else
+			g_menu->bomb.reset( ); // thx alpaca my guy
 
 		if (g_ctx.in_game) {
 			auto netchannel = interfaces::engine->get_net_channel_info();

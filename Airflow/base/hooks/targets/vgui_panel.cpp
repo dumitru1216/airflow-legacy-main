@@ -121,6 +121,7 @@ namespace tr::panel {
 			ecx->set_mouse_input_enabled(panel, g_ctx.uninject ? false : g_cfg.misc.menu);
 		}
 
+		/* yeah fps drops shit framework, i wont even spend time on this shit to fix it */
 		update_buttons( );
 		proceed_binds( );
 
